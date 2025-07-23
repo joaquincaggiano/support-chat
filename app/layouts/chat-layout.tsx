@@ -1,7 +1,7 @@
 import { NavLink, Outlet } from "react-router";
 import { Button } from "~/components/ui/button";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import { X } from "lucide-react";
+import { LogOut, X } from "lucide-react";
 
 const ChatLayout = () => {
   return (
@@ -14,7 +14,7 @@ const ChatLayout = () => {
             <span className="font-semibold">NexTalk</span>
           </div>
         </div>
-        <ScrollArea className="h-[calc(100vh-64px)]">
+        <ScrollArea className="h-[calc(100vh-134px)]">
           <div className="space-y-4 p-4">
             <div className="space-y-1">
               <h3 className="px-2 text-sm font-semibold">Contacts</h3>
@@ -77,6 +77,13 @@ const ChatLayout = () => {
             </div>
           </div>
         </ScrollArea>
+
+        <div className="p-4 border-t">
+          <Button variant="ghost" className="w-full justify-start">
+            <LogOut className="h-4 w-4" />
+            Logout
+          </Button>
+        </div>
       </div>
 
       {/* Main Content */}
