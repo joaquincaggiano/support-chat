@@ -1,5 +1,41 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/testing-args-page";
+import { sleep } from "~/lib/sleep";
+
+export function headers() {
+  return {
+    "X-Stretchy-Pants": "its for fun",
+    "Cache-Control": "max-age=300, s-maxage=3600",
+  };
+}
+
+export function links() {
+  return [
+    // {
+    //   rel: "icon",
+    //   href: "/favicon.png",
+    //   type: "image/png",
+    // },
+    // {
+    //   rel: "stylesheet",
+    //   href: "https://example.com/some/styles.css",
+    // },
+    // {
+    //   rel: "preload",
+    //   href: "/images/banner.jpg",
+    //   as: "image",
+    // },
+  ];
+}
+
+export async function clientLoader() {
+  await sleep(1000);
+  return { message: "Hello, world! from client loader" };
+}
+
+export function HydrateFallback() {
+  return <p>Loading Game...</p>;
+}
 
 export default function TestingArgsPage({
   loaderData,
@@ -9,6 +45,10 @@ export default function TestingArgsPage({
 }: Route.ComponentProps) {
   return (
     <div>
+      <title>Very cool app</title>
+      <meta property="og:title" content="Very cool app" />
+      <meta name="description" content="This app is the best" />
+
       <h1>Welcome to Testing Args Page!</h1>
       <p>Loader Data: {JSON.stringify(loaderData)}</p>
       <p>Action Data: {JSON.stringify(actionData)}</p>
