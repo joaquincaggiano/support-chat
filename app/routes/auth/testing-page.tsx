@@ -26,7 +26,7 @@ export default function MyRouteComponent({
       <p>Matched Routes: {JSON.stringify(matches)}</p>
 
       <NavLink
-        to="/auth/testing-args"
+        to="/auth/testing-args/abc-123"
         className={({ isPending }) =>
           `text-blue-500 underline text-2xl ${
             isPending ? "opacity-50 cursor-progress" : ""

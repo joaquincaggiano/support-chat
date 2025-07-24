@@ -28,7 +28,16 @@ export function links() {
   ];
 }
 
-export async function clientLoader() {
+export async function loader({ params }: Route.LoaderArgs) {
+  console.log({ params });
+
+  await sleep(1000);
+  return { message: "Hello, world! from server loader" };
+}
+
+export async function clientLoader({ params }: Route.ClientLoaderArgs) {
+  console.log({ params });
+
   await sleep(1000);
   return { message: "Hello, world! from client loader" };
 }
@@ -37,12 +46,19 @@ export function HydrateFallback() {
   return <p>Loading Game...</p>;
 }
 
+// this is a hack to make the client loader hydrate
+clientLoader.hydrate = true as const;
+
 export default function TestingArgsPage({
   loaderData,
   actionData,
   params,
   matches,
 }: Route.ComponentProps) {
+  const { id } = params;
+
+  console.log(id);
+
   return (
     <div>
       <title>Very cool app</title>
