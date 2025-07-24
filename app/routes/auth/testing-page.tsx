@@ -1,12 +1,36 @@
 import { Link } from "react-router";
+import type { Route } from "./+types/testing-page";
 
-const TestingPage = () => {
+export async function loader() {
+  return { message: "Hello, world! from loader" };
+}
+
+export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
+  const serverData = await serverLoader();
+
+  return { message: "Hello, world! from client loader", serverData };
+}
+
+export default function MyRouteComponent({
+  loaderData,
+  actionData,
+  params,
+  matches,
+}: Route.ComponentProps) {
   return (
-    <div className="flex flex-col gap-6">
-      <h1>Testing Page</h1>
-      <Link to="/auth/login">Login</Link>
+    <div>
+      <h1>Welcome to My Route with Props!</h1>
+      <p>Loader Data: {JSON.stringify(loaderData)}</p>
+      <p>Action Data: {JSON.stringify(actionData)}</p>
+      <p>Route Parameters: {JSON.stringify(params)}</p>
+      <p>Matched Routes: {JSON.stringify(matches)}</p>
+
+      <Link
+        to="/auth/testing-args"
+        className="text-blue-500 underline text-2xl"
+      >
+        Testing Args Page
+      </Link>
     </div>
   );
-};
-
-export default TestingPage;
+}
