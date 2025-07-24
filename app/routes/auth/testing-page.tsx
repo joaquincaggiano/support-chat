@@ -1,7 +1,9 @@
-import { Form, NavLink } from "react-router";
+import { Form, NavLink, useNavigation } from "react-router";
 import type { Route } from "./+types/testing-page";
+import { sleep } from "~/lib/sleep";
 
 export async function action({ request }: Route.ActionArgs) {
+  await sleep(1500);
   const data = await request.formData();
   console.log({ data });
 
@@ -9,6 +11,7 @@ export async function action({ request }: Route.ActionArgs) {
 }
 
 export async function clientAction({ serverAction }: Route.ClientActionArgs) {
+  await sleep(1000);
   const serverData = await serverAction();
 
   return { message: "Hello, world! from client action", serverData };
@@ -24,12 +27,15 @@ export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
   return { message: "Hello, world! from client loader", serverData };
 }
 
-export default function MyRouteComponent({
+export default function TestingPage({
   loaderData,
   actionData,
   params,
   matches,
 }: Route.ComponentProps) {
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
+
   return (
     <div>
       <h1>Welcome to My Route with Props!</h1>
@@ -62,8 +68,12 @@ export default function MyRouteComponent({
           name="age"
           placeholder="Age"
         />
-        <button className="bg-blue-500 text-white rounded-md p-2" type="submit">
-          Submit
+        <button
+          disabled={isSubmitting}
+          className="bg-blue-500 text-white rounded-md p-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          type="submit"
+        >
+          {isSubmitting ? "Submitting..." : "Submit"}
         </button>
       </Form>
     </div>
