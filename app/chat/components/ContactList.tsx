@@ -1,4 +1,4 @@
-import { NavLink } from "react-router";
+import { NavLink, useParams } from "react-router";
 import { Button } from "~/components/ui/button";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import type { Client } from "../interfaces/chat.interface";
@@ -8,6 +8,8 @@ interface Props {
 }
 
 const ContactList = ({ clients }: Props) => {
+  const { id } = useParams();
+
   return (
     <ScrollArea className="h-[calc(100vh-134px)]">
       <div className="space-y-4 p-4">
@@ -19,16 +21,28 @@ const ContactList = ({ clients }: Props) => {
                 <NavLink
                   key={client.id}
                   to={`/chat/client/${client.id}`}
-                  className={({ isActive }) =>
+                  className={({ isActive, isPending }) =>
                     `w-full justify-start flex p-2 rounded-md ${
-                      isActive && "bg-primary/10 text-primary-foregorund"
+                      isActive ? "bg-black" : isPending ? "bg-primary/10" : ""
                     }`
                   }
                 >
-                  <div className="h-6 w-6 rounded-full bg-gray-300 mr-2 flex-shrink-0 flex items-center justify-center text-white text-xs">
+                  <div
+                    className={`h-6 w-6 rounded-full ${
+                      id === client.id
+                        ? "bg-white text-black"
+                        : "bg-gray-300 text-white"
+                    } mr-2 flex-shrink-0 flex items-center justify-center text-xs`}
+                  >
                     {client.id.slice(0, 2)}
                   </div>
-                  <span className="text-gray-400">{client.name}</span>
+                  <span
+                    className={
+                      id === client.id ? "text-white" : "text-gray-400"
+                    }
+                  >
+                    {client.name}
+                  </span>
                 </NavLink>
               );
             })}
