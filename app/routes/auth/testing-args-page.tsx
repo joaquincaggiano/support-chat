@@ -66,6 +66,7 @@ export default function TestingArgsPage({
       <meta name="description" content="This app is the best" />
 
       <h1>Welcome to Testing Args Page!</h1>
+      <p>ID: {id}</p>
       <p>Loader Data: {JSON.stringify(loaderData)}</p>
       <p>Action Data: {JSON.stringify(actionData)}</p>
       <p>Route Parameters: {JSON.stringify(params)}</p>
