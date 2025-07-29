@@ -57,8 +57,6 @@ export default function TestingArgsPage({
 }: Route.ComponentProps) {
   const { id } = params;
 
-  console.log(id);
-
   return (
     <div>
       <title>Very cool app</title>
