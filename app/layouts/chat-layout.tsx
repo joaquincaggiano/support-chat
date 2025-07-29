@@ -1,13 +1,14 @@
 import { Form, Link, Outlet, redirect } from "react-router";
 import type { Route } from "./+types/chat-layout";
 import { LogOut, X } from "lucide-react";
-import { getClients } from "~/fake/fake-data";
+import { getClient, getClients } from "~/fake/fake-data";
 import { Button } from "~/components/ui/button";
 import ContactList from "~/chat/components/ContactList";
 import ContactInformationCard from "~/chat/components/contact/ContactInformationCard";
 import { getSession } from "~/sessions.server";
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader({ request, params }: Route.LoaderArgs) {
+  const { id } = params;
   const session = await getSession(request.headers.get("Cookie"));
 
   const userName = session.get("name");
@@ -17,6 +18,12 @@ export async function loader({ request }: Route.LoaderArgs) {
   }
 
   const clients = await getClients();
+
+  if (id) {
+    const client = await getClient(id);
+    return { client, clients, userName };
+  }
+
   return { clients, userName };
 }
 
@@ -30,13 +37,19 @@ const ChatLayout = ({ loaderData }: Route.ComponentProps) => {
         <div className="p-4 border-b">
           <div className="flex items-center gap-2">
             <div className="h-6 w-6 rounded-full bg-primary" />
-            <Link to="/chat" className="font-semibold">{userName}</Link>
+            <Link to="/chat" className="font-semibold">
+              {userName}
+            </Link>
           </div>
         </div>
         <ContactList clients={clients} />
 
         <Form method="post" action="/auth/logout" className="p-4 border-t">
-          <Button variant="ghost" type="submit" className="w-full justify-start">
+          <Button
+            variant="ghost"
+            type="submit"
+            className="w-full justify-start"
+          >
             <LogOut className="h-4 w-4" />
             Logout
           </Button>
